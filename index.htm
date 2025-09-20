@@ -1,0 +1,2838 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krishimitra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Custom styles for the dark mode transition and general layout consistency */
+    body {
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s, color 0.3s, background-image 0.5s;
+      background-color: #f7fafc; /* Light background */
+    }
+    .dark-mode {
+      background-color: #1a202c; /* Dark background */
+      color: #e2e8f0; /* Light text */
+    }
+
+    /* Homepage Background Style */
+    body.homepage-bg {
+        background-image: url('https://media.istockphoto.com/id/965148388/photo/green-ripening-soybean-field-agricultural-landscape.jpg?s=612x612&w=0&k=20&c=cEVP3uj34-5obt-Jf_WI3O9qfP6tVrFaQIv1rBvvpzc=');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+    }
+    body.homepage-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Dimming overlay */
+        z-index: -1;
+    }
+    .dark-mode.homepage-bg::before {
+        background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for dark mode */
+    }
+
+
+    /* Login Page Specific Styles */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+    }
+    .top-right-login {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        z-index: 10;
+    }
+    .login-card {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 2.5rem;
+      border-radius: 0.75rem; /* rounded-xl */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+    .dark-mode .login-card {
+      background-color: rgba(45, 55, 72, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .login-card .welcome-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .login-card h1 {
+      font-size: 2.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #2d3748; /* Gray-800 */
+    }
+    .dark-mode .login-card h1 {
+      color: #e2e8f0;
+    }
+    .login-card p {
+      color: #4a5568; /* Gray-700 */
+      margin-bottom: 1.5rem;
+    }
+    .dark-mode .login-card p {
+      color: #cbd5e0;
+    }
+    .vision-mission {
+        text-align: left;
+        border-left: 3px solid #48bb78;
+        padding-left: 1rem;
+        margin: 2rem 0;
+    }
+    .vision-mission h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #2d3748;
+    }
+     .dark-mode .vision-mission h3 {
+        color: #e2e8f0;
+    }
+    .vision-mission p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        color: #718096;
+    }
+    .dark-mode .vision-mission p {
+        color: #a0aec0;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .login-form label {
+      text-align: left;
+      font-weight: 500;
+      color: #2d3748; /* Gray-800 */
+    }
+    .dark-mode .login-form label {
+      color: #e2e8f0;
+    }
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0; /* Gray-200 */
+      border-radius: 0.375rem; /* rounded-md */
+      font-size: 1rem;
+      color: #2d3748; /* Gray-800 */
+      background-color: #ffffff;
+    }
+    .dark-mode .login-form input {
+      background-color: #4a5568;
+      border-color: #4a5568;
+      color: #e2e8f0;
+    }
+    .dark-mode .login-form input::placeholder {
+      color: #cbd5e0;
+    }
+    .login-form input:focus {
+      outline: none;
+      border-color: #48bb78; /* Green-500 */
+      box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.2);
+    }
+    .btn-primary {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: #48bb78; /* Green-500 */
+      color: #ffffff;
+      border: none;
+      transition: background-color 0.2s;
+    }
+    .btn-primary:hover {
+      background-color: #38a169; /* Green-600 */
+    }
+    .login-message {
+      margin-top: 1rem;
+      font-weight: 500;
+      color: #e53e3e; /* Red-500 */
+    }
+    .dark-mode .login-message {
+      color: #fc8181; /* Lighter red for dark mode */
+    }
+    .role-radio-group {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: left;
+    }
+    .role-radio-group label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+    .announcement-section {
+        background-color: #e6fffa; /* Light green */
+        border-left: 4px solid #38a169; /* Green */
+        padding: 1rem;
+        margin-bottom: 2rem;
+        border-radius: 0.25rem;
+    }
+    .dark-mode .announcement-section {
+        background-color: #2c5282; /* Dark blue */
+        border-left-color: #63b3ed; /* Light blue */
+    }
+    .announcement-item {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #b2f5ea;
+    }
+    .dark-mode .announcement-item {
+        border-bottom-color: #4a5568;
+    }
+    .announcement-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .announcement-date {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #38a169;
+        margin-bottom: 0.25rem;
+    }
+    .dark-mode .announcement-date {
+        color: #63b3ed;
+    }
+
+
+    /* Dashboard Layout */
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 260px;
+      background-color: #ffffff;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .dark-mode .sidebar {
+      background-color: #2d3748;
+    }
+    .sidebar-logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #38a169; /* Green-700 */
+      margin-bottom: 2rem;
+      padding: 0 1rem;
+    }
+    .sidebar-links {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+    .sidebar-links li {
+      margin-bottom: 0.5rem;
+      border-radius: 0.375rem; /* rounded-md */
+    }
+    .sidebar-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: #4a5568; /* Gray-700 */
+      font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
+      border-radius: 0.375rem;
+    }
+    .sidebar-links a:hover {
+      background-color: #edf2f7; /* Gray-100 */
+    }
+    .dark-mode .sidebar-links a {
+      color: #e2e8f0;
+    }
+    .dark-mode .sidebar-links a:hover {
+      background-color: #4a5568;
+    }
+    .sidebar-links li.active {
+      background-color: #48bb78; /* Green-500 */
+    }
+    .sidebar-links li.active a {
+      color: #ffffff;
+    }
+
+    .dashboard-main {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dark-mode .dashboard-header {
+      border-color: #4a5568;
+    }
+    .quick-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-success {
+      background-color: #48bb78; /* Green-500 */
+      color: #ffffff;
+    }
+    .btn-success:hover {
+      background-color: #38a169; /* Green-600 */
+    }
+    .btn-secondary {
+      background-color: #e2e8f0; /* Gray-200 */
+      color: #4a5568; /* Gray-700 */
+      border: 1px solid #cbd5e0; /* Gray-300 */
+    }
+    .btn-secondary:hover {
+      background-color: #cbd5e0; /* Gray-300 */
+    }
+    .dark-mode .btn-secondary {
+      background-color: #4a5568;
+      color: #e2e8f0;
+      border-color: #4a5568;
+    }
+    .dark-mode .btn-secondary:hover {
+      background-color: #6a7382;
+    }
+    .key-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .metric-card {
+      background-color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .dark-mode .metric-card {
+      background-color: #2d3748;
+    }
+    .metric-title {
+      font-size: 1rem;
+      color: #718096; /* Gray-600 */
+      margin-bottom: 0.5rem;
+    }
+    .dark-mode .metric-title {
+      color: #cbd5e0;
+    }
+    .metric-value {
+      font-size: 2.25rem;
+      font-weight: bold;
+      color: #38a169; /* Green-600 */
+    }
+    .dark-mode .metric-value {
+      color: #68d391;
+    }
+    .recent-activity h3, .agent-activity-summary h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    .dark-mode .recent-activity h3, .dark-mode .agent-activity-summary h3 {
+      color: #e2e8f0;
+    }
+    .activity-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #ffffff;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .dark-mode .activity-table {
+      background-color: #2d3748;
+    }
+    .activity-table th, .activity-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dark-mode .activity-table th, .dark-mode .activity-table td {
+      border-color: #4a5568;
+    }
+    .activity-table th {
+      background-color: #edf2f7; /* Gray-100 */
+      color: #4a5568; /* Gray-700 */
+      font-weight: 600;
+    }
+    .dark-mode .activity-table th {
+      background-color: #4a5568;
+      color: #e2e8f0;
+    }
+    .activity-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .activity-table tbody tr:hover {
+      background-color: #f7fafc; /* Gray-50 */
+    }
+    .dark-mode .activity-table tbody tr:hover {
+      background-color: #4a5568;
+    }
+
+    /* Common styles for tab content sections */
+    .tab-content {
+      background-color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .dark-mode .tab-content {
+      background-color: #2d3748;
+    }
+    .tab-content h2 {
+      font-size: 1.875rem; /* text-3xl */
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: #2d3748; /* Gray-800 */
+    }
+    .dark-mode .tab-content h2 {
+      color: #e2e8f0;
+    }
+    .tab-content p.text-gray-600 {
+      margin-bottom: 1.5rem;
+    }
+    .dark-mode .tab-content p.text-gray-600 {
+      color: #cbd5e0;
+    }
+    .tab-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .tab-content th, .tab-content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dark-mode .tab-content th, .dark-mode .tab-content td {
+      border-color: #4a5568;
+    }
+    .tab-content th {
+      background-color: #edf2f7;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    .dark-mode .tab-content th {
+      background-color: #4a5568;
+      color: #e2e8f0;
+    }
+    .tab-content td {
+      color: #2d3748;
+    }
+    .dark-mode .tab-content td {
+      color: #e2e8f0;
+    }
+    .tab-content tbody tr:hover {
+      background-color: #f7fafc;
+    }
+    .dark-mode .tab-content tbody tr:hover {
+      background-color: #4a5568;
+    }
+    .tab-content .btn-success, .tab-content .btn-secondary {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    .tab-content .text-blue-600, .tab-content .text-red-600, .tab-content .text-yellow-600 {
+      cursor: pointer;
+    }
+    .dark-mode .tab-content .text-blue-600 {
+      color: #90cdf4;
+    }
+    .dark-mode .tab-content .text-red-600 {
+      color: #fc8181;
+    }
+    .dark-mode .tab-content .text-yellow-600 {
+      color: #faf089;
+    }
+    .tab-content .text-green-600 {
+      color: #38a169;
+    }
+    .dark-mode .tab-content .text-green-600 {
+      color: #68d391;
+    }
+    .tab-content .text-red-500 {
+      color: #e53e3e;
+    }
+    .dark-mode .tab-content .text-red-500 {
+      color: #fc8181;
+    }
+
+    /* Form Inputs */
+    .input-field {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      color: #2d3748;
+      background-color: #ffffff;
+    }
+    .dark-mode .input-field {
+      background-color: #4a5568;
+      border-color: #4a5568;
+      color: #e2e8f0;
+    }
+    .input-field::placeholder {
+      color: #a0aec0; /* Gray-500 */
+    }
+    .dark-mode .input-field::placeholder {
+      color: #cbd5e0;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #48bb78;
+      box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.2);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background-color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 28rem; /* max-w-md */
+    }
+    .dark-mode .modal-content {
+      background-color: #2d3748;
+    }
+    .modal-content h3 {
+      font-size: 1.25rem; /* text-xl */
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    .dark-mode .modal-content h3 {
+      color: #e2e8f0;
+    }
+    .modal-content p {
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+    }
+    .dark-mode .modal-content p {
+      color: #e2e8f0;
+    }
+    .modal-content .form-input, .modal-content .form-textarea, .modal-content .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      margin-bottom: 1rem;
+      background-color: #ffffff;
+      color: #2d3748;
+    }
+    .dark-mode .modal-content .form-input, .dark-mode .modal-content .form-textarea, .dark-mode .modal-content .form-select {
+      background-color: #4a5568;
+      border-color: #4a5568;
+      color: #e2e8f0;
+    }
+    .modal-content .flex-justify-end {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    /* Dark Mode Toggle Switch */
+    .dark-mode-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #ffffff;
+      padding: 0.75rem 1rem;
+      border-radius: 9999px; /* full rounded */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 40;
+    }
+    .dark-mode .dark-mode-toggle {
+      background-color: #2d3748;
+      color: #e2e8f0;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #48bb78; /* Tailwind green-500 */
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px #48bb78;
+    }
+    input:checked + .slider:before {
+      -webkit-transform: translateX(20px);
+      -ms-transform: translateX(20px);
+      transform: translateX(20px);
+    }
+
+    /* Utility classes */
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .grid { display: grid; }
+    .w-full { width: 100%; }
+    .max-w-md { max-width: 28rem; } /* 448px */
+    .p-6 { padding: 1.5rem; } /* 24px */
+    .rounded-lg { border-radius: 0.5rem; } /* 8px */
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .gap-4 { gap: 1rem; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .font-bold { font-weight: 700; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .hover\:underline:hover { text-decoration: underline; }
+    .mr-2 { margin-right: 0.5rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .border { border-width: 1px; }
+    .border-gray-300 { border-color: #cbd5e0; }
+    .focus\:outline-green-500:focus { outline: 2px solid #48bb78; outline-offset: 2px; }
+    .focus\:border-transparent:focus { border-color: transparent; }
+    .focus\:ring-2:focus { --tw-ring-offset-shadow: var(--tw-ring-shadow, 0 0 #0000); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color); }
+    .focus\:ring-green-500:focus { --tw-ring-color: #48bb78; }
+    
+    .community-post.flagged {
+        border: 2px solid #e53e3e; /* Red border for flagged posts */
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .dashboard-layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        padding-bottom: 0.5rem;
+      }
+      .sidebar-logo {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .sidebar-links {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0 1rem;
+      }
+      .sidebar-links li {
+        margin-bottom: 0;
+      }
+      .sidebar-links a {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        gap: 0.5rem;
+      }
+      .dashboard-main {
+        padding: 1rem;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .quick-actions {
+        flex-direction: column;
+      }
+      .key-metrics {
+        grid-template-columns: 1fr;
+      }
+      .dark-mode-toggle {
+        position: static;
+        margin-top: 1rem;
+        justify-content: center;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <section id="login-page" class="login-container">
+     <div id="top-right-login-btn-container" class="top-right-login">
+        <button onclick="revealLoginForm()" class="btn btn-success">Login</button>
+    </div>
+
+    <div class="login-card">
+      <div id="welcome-screen">
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*gAN5iYgxSBhFT8LwbwgzQA.jpeg" 
+             alt="Smart Farming" class="welcome-image">
+        <h1>Welcome to Krishimitra</h1>
+        
+        <div class="vision-mission">
+            <div>
+                <h3>Our Mission</h3>
+                <p>To empower farmers and field agents with a unified digital platform, streamlining agricultural management and fostering a connected, efficient, and sustainable farming community.</p>
+            </div>
+            <div class="mt-4">
+                <h3>Our Vision</h3>
+                <p>To be the leading digital backbone for Indian agriculture, driving innovation and prosperity from the ground up.</p>
+            </div>
+        </div>
+
+        <button class="btn-primary w-full" onclick="revealLoginForm()">Proceed to Login</button>
+      </div>
+
+      <div id="login-form-container" class="hidden">
+        <h2 id="login-title" class="text-2xl font-bold mb-4">Member Login</h2>
+        <form class="login-form" id="loginForm">
+
+          <div class="role-radio-group">
+            <label>
+              <input type="radio" name="role" value="admin" checked> Administrator
+            </label>
+            <label>
+              <input type="radio" name="role" value="agent"> Field Agent
+            </label>
+          </div>
+
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+          <button type="submit" class="btn-primary">Login</button>
+          <a href="#" id="back-to-welcome" class="text-sm text-gray-600 dark:text-gray-400 hover:underline mt-4">
+            &larr; Back to Welcome Screen
+          </a>
+          <div id="loginMessage" class="login-message hidden"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="agent-dashboard-page" class="dashboard-layout hidden">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Krishimitra</div>
+      <ul class="sidebar-links">
+        <li class="active"><a href="#" onclick="showAgentTab('agent-dashboard')">🏠 Dashboard</a></li>
+        <li><a href="#" onclick="showAgentTab('agent-farmers')">🧑‍🌾 Farmers</a></li>
+        <li><a href="#" onclick="showAgentTab('agent-tools')">🛠️ Tools</a></li>
+        <li><a href="#" onclick="showAgentTab('agent-reports')">📄 Reports</a></li>
+        <li><a href="#" onclick="showAgentTab('agent-settings')">⚙️ Settings</a></li>
+      </ul>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <h2 class="text-2xl font-bold">Dashboard</h2>
+        <div class="user-info text-gray-700 flex items-center gap-4">
+          Welcome, <span id="loggedInAgentName">Agent</span>
+          <button onclick="logout()" class="btn btn-secondary">Logout</button>
+        </div>
+      </header>
+
+      <div id="agent-dashboard" class="tab-content">
+
+        <section id="announcement-display-area" class="announcement-section">
+            <h3 class="text-xl font-bold mb-2">Announcements from Admin</h3>
+            <div id="announcements-list">
+                </div>
+        </section>
+
+        <section class="quick-actions">
+          <button class="btn btn-success" onclick="showAgentTab('agent-farmers'); toggleAddForm('addAgentFarmerForm')">Register Farmer</button>
+          <button class="btn btn-secondary" onclick="openModal('logFieldReportModal')">Log Field Report</button>
+        </section>
+        <section class="key-metrics">
+          <div class="metric-card">
+            <div class="metric-title">Farmers Registered</div>
+            <div class="metric-value" id="farmersCount">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Tools Deployed</div>
+            <div class="metric-value" id="toolsCount">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Reports Submitted</div>
+            <div class="metric-value" id="reportsCount">0</div>
+          </div>
+        </section>
+        <section class="recent-activity">
+          <h3>Recent Activity</h3>
+          <table class="activity-table">
+            <thead>
+              <tr><th>Date</th><th>Activity</th><th>Details</th></tr>
+            </thead>
+            <tbody id="activity-list">
+              </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div id="agent-farmers" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Farmers</h2>
+        <p class="text-gray-600 mb-4">Manage your farmers and their information</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchFarmerInput" onkeyup="searchFarmers()" placeholder="Search farmers..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAgentFarmerForm')" class="btn btn-success">Add Farmer</button>
+        </div>
+
+        <form id="addAgentFarmerForm" onsubmit="addFarmer(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="farmerName" required type="text" placeholder="Name" class="input-field border p-2 rounded-md" />
+            <input id="farmerLocation" required type="text" placeholder="Location" class="input-field border p-2 rounded-md" />
+            <input id="farmerContact" required type="text" placeholder="Contact" class="input-field border p-2 rounded-md" />
+            <select id="farmerStatus" required class="input-field border p-2 rounded-md">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Farmer</button>
+            <button type="button" onclick="toggleAddForm('addAgentFarmerForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Name</th>
+                <th class="p-3 text-left">Location</th>
+                <th class="p-3 text-left">Contact</th>
+                <th class="p-3 text-left">Status</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="farmerTableBody">
+              </tbody>
+          </table>
+        </div>
+
+        <div id="viewFarmerModal" class="modal-overlay hidden">
+          <div class="modal-content">
+            <h3 class="text-xl font-bold mb-4">Farmer Details</h3>
+            <p id="viewFarmerName" class="mb-2"></p>
+            <p id="viewFarmerLocation" class="mb-2"></p>
+            <p id="viewFarmerContact" class="mb-2"></p>
+            <p id="viewFarmerStatus" class="mb-4"></p>
+            <button onclick="closeModal('viewFarmerModal')" class="btn btn-success">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="agent-tools" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Tools</h2>
+        <p class="text-gray-600 mb-4">Manage your tools and equipment</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchToolInput" onkeyup="searchTools()" placeholder="Search tools..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAgentToolForm')" class="btn btn-success">Add Tool</button>
+        </div>
+
+        <form id="addAgentToolForm" onsubmit="addTool(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="toolName" required type="text" placeholder="Tool Name" class="input-field border p-2 rounded-md" />
+            <input id="toolType" required type="text" placeholder="Type" class="input-field border p-2 rounded-md" />
+            <input id="toolQuantity" required type="number" min="1" placeholder="Quantity" class="input-field border p-2 rounded-md" />
+            <input id="toolUsage" required type="text" placeholder="Usage (e.g., Available, In use)" class="input-field border p-2 rounded-md" />
+            <input id="toolMaintenance" required type="text" placeholder="Maintenance (e.g., Scheduled, Completed)" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Tool</button>
+            <button type="button" onclick="toggleAddForm('addAgentToolForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="flex gap-4 mb-4">
+          <button class="btn filter-btn active bg-gray-200 text-gray-700" onclick="filterTools('all', event)">All tools</button>
+          <button class="btn filter-btn bg-gray-200 text-gray-700" onclick="filterTools('Available', event)">Available</button>
+          <button class="btn filter-btn bg-gray-200 text-gray-700" onclick="filterTools('In use', event)">In use</button>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Tool</th>
+                <th class="p-3 text-left">Type</th>
+                <th class="p-3 text-left">Quantity</th>
+                <th class="p-3 text-left">Usage</th>
+                <th class="p-3 text-left">Maintenance</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="toolsTableBody">
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="agent-reports" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Reports</h2>
+        <p class="text-gray-600 mb-4">Generate and view reports on farming activities, tool usage, and field data.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchReportInput" onkeyup="searchReports()" placeholder="Search reports..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAgentReportForm')" class="btn btn-success">Add Report</button>
+        </div>
+
+        <form id="addAgentReportForm" onsubmit="addReport(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="reportName" required type="text" placeholder="Report Name" class="input-field border p-2 rounded-md" />
+            <select id="reportType" required class="input-field border p-2 rounded-md">
+              <option value="">Select Type</option>
+              <option value="Farming Activity">Farming Activity</option>
+              <option value="Field Data">Field Data</option>
+              <option value="Tool Usage">Tool Usage</option>
+            </select>
+            <input id="reportDate" required type="date" class="input-field border p-2 rounded-md" />
+            <input id="reportField" required type="text" placeholder="Field" class="input-field border p-2 rounded-md" />
+            <input id="reportTool" required type="text" placeholder="Tool" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Report</button>
+            <button type="button" onclick="toggleAddForm('addAgentReportForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Report Name</th>
+                <th class="p-3 text-left">Type</th>
+                <th class="p-3 text-left">Date</th>
+                <th class="p-3 text-left">Field</th>
+                <th class="p-3 text-left">Tool</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTableBody">
+              </tbody>
+          </table>
+        </div>
+
+        <div id="viewReportModal" class="modal-overlay hidden">
+          <div class="modal-content">
+            <h3 class="text-xl font-bold mb-4">Report Details</h3>
+            <p id="viewReportName" class="mb-2"></p>
+            <p id="viewReportType" class="mb-2"></p>
+            <p id="viewReportDate" class="mb-2"></p>
+            <p id="viewReportField" class="mb-2"></p>
+            <p id="viewReportTool" class="mb-4"></p>
+            <button onclick="closeModal('viewReportModal')" class="btn btn-success">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="agent-settings" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Settings</h2>
+        <p class="text-gray-600 mb-4">Manage your account and preferences.</p>
+
+        <div class="settings-section mb-6">
+          <h3 class="text-xl font-bold mb-4">Account</h3>
+          <div class="settings-list flex flex-col gap-4">
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Personal Information settings coming soon!')">
+              <span class="text-2xl">👤</span>
+              <div>
+                <div class="font-semibold">Personal Information</div>
+                <div class="text-gray-600 text-sm">Manage your personal information</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Notification settings coming soon!')">
+              <span class="text-2xl">🔔</span>
+              <div>
+                <div class="font-semibold">Notifications</div>
+                <div class="text-gray-600 text-sm">Manage your notification preferences</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Display settings coming soon!')">
+              <span class="text-2xl">💡</span>
+              <div>
+                <div class="font-semibold">Display</div>
+                <div class="text-gray-600 text-sm">Manage your display preferences</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3 class="text-xl font-bold mb-4">Security</h3>
+          <div class="settings-list flex flex-col gap-4">
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Connected Devices management coming soon!')">
+              <span class="text-2xl">💻</span>
+              <div>
+                <div class="font-semibold">Connected Devices</div>
+                <div class="text-gray-600 text-sm">Manage your connected devices</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="logFieldReportModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h3 class="text-xl font-bold mb-4">Log Field Report</h3>
+          <form id="logFieldReportForm" onsubmit="submitFieldReport(event)">
+            <input type="text" id="reportTitle" placeholder="Report Title" required
+                   class="form-input border p-2 rounded-md w-full mb-4">
+            <input type="date" id="reportDateField" required
+                   class="form-input border p-2 rounded-md w-full mb-4">
+            <input type="text" id="reportFieldName" placeholder="Field Name" required
+                   class="form-input border p-2 rounded-md w-full mb-4">
+            <textarea id="reportDetails" placeholder="Details" required
+                      class="form-textarea border p-2 rounded-md w-full mb-4 h-24 resize-y"></textarea>
+            <div class="flex justify-end gap-2">
+              <button type="button" onclick="closeModal('logFieldReportModal')" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-success">Submit Report</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section id="admin-dashboard-page" class="dashboard-layout hidden">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Krishimitra</div>
+      <ul class="sidebar-links">
+        <li class="active"><a href="#" onclick="showAdminTab('admin-dashboard')">🏠 Dashboard</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-farmers')">🧑‍🌾 Farmers</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-agents')">👥 Agents</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-tools')">🛠️ Tools</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-reports')">📄 Reports</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-insights')">📊 Insights</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-automation')">🤖 Automation</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-marketplace')">🛒 Marketplace</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-community')">💬 Community</a></li>
+        <li><a href="#" onclick="showAdminTab('admin-settings')">⚙️ Settings</a></li>
+      </ul>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <h2 class="text-2xl font-bold">Admin Dashboard Overview</h2>
+        <div class="flex items-center gap-4">
+          <button class="btn btn-secondary" onclick="openModal('postAnnouncementModal')">📢 Post Announcement</button>
+          <div class="user-info text-gray-700 flex items-center gap-4">
+            Welcome, Admin
+            <button onclick="logout()" class="btn btn-secondary">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="admin-dashboard" class="tab-content">
+        <section id="admin-announcement-display-area" class="announcement-section">
+            <h3 class="text-xl font-bold mb-2">Manage Announcements</h3>
+            <div id="admin-announcements-list">
+                </div>
+        </section>
+        
+        <section class="key-metrics">
+          <div class="metric-card">
+            <div class="metric-title">Total Farmers Registered</div>
+            <div class="metric-value" id="totalFarmers">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Total Field Agents</div>
+            <div class="metric-value" id="totalAgents">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Marketplace Listings</div>
+            <div class="metric-value" id="marketplaceListings">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Reports Submitted</div>
+            <div class="metric-value" id="totalReports">0</div>
+          </div>
+        </section>
+        <section class="recent-activity mt-6">
+          <h3>Recent Activity (Admin Log)</h3>
+          <table class="activity-table">
+            <thead>
+              <tr><th>Date</th><th>Activity</th><th>Details</th></tr>
+            </thead>
+            <tbody id="admin-activity-list">
+              </tbody>
+          </table>
+        </section>
+        <section class="agent-activity-summary mt-6">
+          <h3>Agent Activity Summary</h3>
+          <table class="activity-table">
+            <thead>
+              <tr><th>Agent Name</th><th>Farmers Added</th><th>Reports Submitted</th><th>Last Active</th></tr>
+            </thead>
+            <tbody id="agent-summary-list">
+              <tr><td>Agent Sharma</td><td>125</td><td>42</td><td>2024-07-26</td></tr>
+              <tr><td>Agent Verma</td><td>80</td><td>30</td><td>2024-07-25</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <div id="admin-farmers" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Farmers (Admin View)</h2>
+        <p class="text-gray-600 mb-4">View and manage all farmer information across agents.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchAdminFarmerInput" onkeyup="searchAdminFarmers()" placeholder="Search farmers..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAdminFarmerForm')" class="btn btn-success">Add Farmer</button>
+        </div>
+
+        <form id="addAdminFarmerForm" onsubmit="addAdminFarmer(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="adminFarmerName" required type="text" placeholder="Name" class="input-field border p-2 rounded-md" />
+            <input id="adminFarmerLocation" required type="text" placeholder="Location" class="input-field border p-2 rounded-md" />
+            <input id="adminFarmerContact" required type="text" placeholder="Contact" class="input-field border p-2 rounded-md" />
+            <select id="adminFarmerStatus" required class="input-field border p-2 rounded-md">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <input id="adminFarmerAssignedAgent" type="text" placeholder="Assigned Agent (Optional)" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Farmer</button>
+            <button type="button" onclick="toggleAddForm('addAdminFarmerForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Name</th>
+                <th class="p-3 text-left">Location</th>
+                <th class="p-3 text-left">Contact</th>
+                <th class="p-3 text-left">Status</th>
+                <th class="p-3 text-left">Assigned Agent</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminFarmerTableBody">
+              </tbody>
+          </table>
+        </div>
+
+        <div id="viewAdminFarmerModal" class="modal-overlay hidden">
+          <div class="modal-content">
+            <h3 class="text-xl font-bold mb-4">Farmer Details</h3>
+            <p id="viewAdminFarmerName" class="mb-2"></p>
+            <p id="viewAdminFarmerLocation" class="mb-2"></p>
+            <p id="viewAdminFarmerContact" class="mb-2"></p>
+            <p id="viewAdminFarmerStatus" class="mb-2"></p>
+            <p id="viewAdminFarmerAssignedAgent" class="mb-4"></p>
+            <button onclick="closeModal('viewAdminFarmerModal')" class="btn btn-success">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-agents" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Manage Agents</h2>
+        <p class="text-gray-600 mb-4">Add, modify, and delete field agent records.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchAgentInput" onkeyup="searchAgents()" placeholder="Search agents..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAdminAgentForm')" class="btn btn-success">Add Agent</button>
+        </div>
+
+        <form id="addAdminAgentForm" onsubmit="addAgent(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="agentName" required type="text" placeholder="Agent Name" class="input-field border p-2 rounded-md" />
+            <input id="agentEmail" required type="email" placeholder="Email" class="input-field border p-2 rounded-md" />
+            <input id="agentPhone" type="text" placeholder="Phone (Optional)" class="input-field border p-2 rounded-md" />
+            <input id="agentRegion" type="text" placeholder="Assigned Region (Optional)" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Agent</button>
+            <button type="button" onclick="toggleAddForm('addAdminAgentForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Name</th>
+                <th class="p-3 text-left">Email</th>
+                <th class="p-3 text-left">Phone</th>
+                <th class="p-3 text-left">Region</th>
+                <th class="p-3 text-left">Username</th>
+                <th class="p-3 text-left">Password</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="agentTableBody">
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="admin-tools" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Tools (Admin View)</h2>
+        <p class="text-gray-600 mb-4">Manage all tools and equipment in the system.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchAdminToolInput" onkeyup="searchAdminTools()" placeholder="Search tools..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAdminToolForm')" class="btn btn-success">Add Tool</button>
+        </div>
+
+        <form id="addAdminToolForm" onsubmit="addAdminTool(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="adminToolName" required type="text" placeholder="Tool Name" class="input-field border p-2 rounded-md" />
+            <input id="adminToolType" required type="text" placeholder="Type" class="input-field border p-2 rounded-md" />
+            <input id="adminToolQuantity" required type="number" min="1" placeholder="Quantity" class="input-field border p-2 rounded-md" />
+            <input id="adminToolUsage" required type="text" placeholder="Usage (e.g., Available, In use)" class="input-field border p-2 rounded-md" />
+            <input id="adminToolMaintenance" required type="text" placeholder="Maintenance (e.g., Scheduled, Completed)" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Tool</button>
+            <button type="button" onclick="toggleAddForm('addAdminToolForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="flex gap-4 mb-4">
+          <button class="btn filter-btn active bg-gray-200 text-gray-700" onclick="filterAdminTools('all', event)">All tools</button>
+          <button class="btn filter-btn bg-gray-200 text-gray-700" onclick="filterAdminTools('Available', event)">Available</button>
+          <button class="btn filter-btn bg-gray-200 text-gray-700" onclick="filterAdminTools('In use', event)">In use</button>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Tool</th>
+                <th class="p-3 text-left">Type</th>
+                <th class="p-3 text-left">Quantity</th>
+                <th class="p-3 text-left">Usage</th>
+                <th class="p-3 text-left">Maintenance</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminToolsTableBody">
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="admin-reports" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Reports (Admin View)</h2>
+        <p class="text-gray-600 mb-4">View and manage all submitted reports.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchAdminReportInput" onkeyup="searchAdminReports()" placeholder="Search reports..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addAdminReportForm')" class="btn btn-success">Add Report</button>
+        </div>
+
+        <form id="addAdminReportForm" onsubmit="addAdminReport(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="adminReportName" required type="text" placeholder="Report Name" class="input-field border p-2 rounded-md" />
+            <select id="adminReportType" required class="input-field border p-2 rounded-md">
+              <option value="">Select Type</option>
+              <option value="Farming Activity">Farming Activity</option>
+              <option value="Field Data">Field Data</option>
+              <option value="Tool Usage">Tool Usage</option>
+            </select>
+            <input id="adminReportDate" required type="date" class="input-field border p-2 rounded-md" />
+            <input id="adminReportField" required type="text" placeholder="Field" class="input-field border p-2 rounded-md" />
+            <input id="adminReportTool" required type="text" placeholder="Tool" class="input-field border p-2 rounded-md" />
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Report</button>
+            <button type="button" onclick="toggleAddForm('addAdminReportForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Report Name</th>
+                <th class="p-3 text-left">Type</th>
+                <th class="p-3 text-left">Date</th>
+                <th class="p-3 text-left">Field</th>
+                <th class="p-3 text-left">Tool</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminReportsTableBody">
+              </tbody>
+          </table>
+        </div>
+
+        <div id="viewAdminReportModal" class="modal-overlay hidden">
+          <div class="modal-content">
+            <h3 class="text-xl font-bold mb-4">Report Details</h3>
+            <p id="viewAdminReportName" class="mb-2"></p>
+            <p id="viewAdminReportType" class="mb-2"></p>
+            <p id="viewAdminReportDate" class="mb-2"></p>
+            <p id="viewAdminReportField" class="mb-2"></p>
+            <p id="viewAdminReportTool" class="mb-4"></p>
+            <button onclick="closeModal('viewAdminReportModal')" class="btn btn-success">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-insights" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Insights</h2>
+        <p class="text-gray-600 mb-4">Visualize collected data for monitoring and decisions.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-100 p-4 rounded-lg shadow-md text-center">
+            <h3 class="text-xl font-bold mb-2">Farmer Registrations (Monthly)</h3>
+            <canvas id="farmerRegistrationsChart"></canvas>
+            <p class="text-gray-600 mt-2">Chart.js integration for monthly farmer registrations.</p>
+          </div>
+          <div class="bg-gray-100 p-4 rounded-lg shadow-md text-center">
+            <h3 class="text-xl font-bold mb-2">Tool Usage Distribution</h3>
+            <canvas id="toolUsageChart"></canvas>
+            <p class="text-gray-600 mt-2">Chart.js integration for tool usage distribution.</p>
+          </div>
+          <div class="bg-gray-100 p-4 rounded-lg shadow-md text-center col-span-1 md:col-span-2">
+            <h3 class="text-xl font-bold mb-2">Report Submissions (Region-wise)</h3>
+            <canvas id="reportSubmissionsChart"></canvas>
+            <p class="text-gray-600 mt-2">Chart.js integration for region-wise report submissions.</p>
+          </div>
+        </div>
+        <div class="recent-activity mt-6">
+          <h3>Top Performing Agents</h3>
+          <table class="activity-table">
+            <thead>
+              <tr><th>Agent Name</th><th>Farmers Onboarded</th><th>Reports Submitted</th></tr>
+            </thead>
+            <tbody id="topAgentsTableBody">
+              <tr><td>Agent Sharma</td><td>125</td><td>42</td></tr>
+              <tr><td>Agent Verma</td><td>80</td><td>30</td></tr>
+              <tr><td>Agent Kumar</td><td>95</td><td>35</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="admin-automation" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Automation</h2>
+        <p class="text-gray-600 mb-4">Automate repetitive tasks for efficiency.</p>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-4">Rules Panel</h3>
+          <p class="text-gray-700 mb-2">Define rules for automated alerts and actions.</p>
+          <ul id="automation-rules-list" class="list-disc pl-5 text-gray-700">
+             </ul>
+          <button class="btn btn-success mt-4" onclick="openModal('addRuleModal')">Add New Rule</button>
+        </div>
+      </div>
+
+      <div id="admin-marketplace" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Marketplace</h2>
+        <p class="text-gray-600 mb-4">Manage products and services for agricultural support.</p>
+
+        <div class="flex justify-between items-center mb-4">
+          <input type="text" id="searchMarketplaceInput" onkeyup="searchMarketplace()" placeholder="Search listings..."
+                 class="input-field border border-gray-300 p-2 w-64 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="toggleAddForm('addListingForm')" class="btn btn-success">Add New Listing</button>
+        </div>
+
+        <form id="addListingForm" onsubmit="addListing(event)" class="bg-white p-4 rounded-lg shadow-md mb-4 hidden max-w-2xl">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="listingName" required type="text" placeholder="Listing Name" class="input-field border p-2 rounded-md" />
+            <input id="listingCategory" required type="text" placeholder="Category (e.g., Seeds, Equipment)" class="input-field border p-2 rounded-md" />
+            <input id="listingVendor" required type="text" placeholder="Vendor" class="input-field border p-2 rounded-md" />
+            <textarea id="listingDescription" placeholder="Description" class="input-field border p-2 rounded-md col-span-full h-24 resize-y"></textarea>
+          </div>
+          <div class="text-right mt-4">
+            <button type="submit" class="btn btn-success">Save Listing</button>
+            <button type="button" onclick="toggleAddForm('addListingForm')" class="btn btn-secondary ml-2">Cancel</button>
+          </div>
+        </form>
+
+        <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+          <table class="w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left">Listing Name</th>
+                <th class="p-3 text-left">Category</th>
+                <th class="p-3 text-left">Vendor</th>
+                <th class="p-3 text-left">Description</th>
+                <th class="p-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="marketplaceTableBody">
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="admin-community" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Community Forum</h2>
+        <p class="text-gray-600 mb-4">Post announcements and moderate discussions.</p>
+
+        <div class="mb-4">
+          <textarea id="announcementText" placeholder="Write a new announcement..."
+                    class="input-field border border-gray-300 p-2 w-full rounded-md h-24 resize-y mb-2"></textarea>
+          <button onclick="postAnnouncement()" class="btn btn-success">Post Announcement</button>
+        </div>
+
+        <div class="community-posts mt-6">
+          <h3 class="text-xl font-bold mb-4">Recent Posts</h3>
+          <div id="communityPostsList" class="flex flex-col gap-4">
+            </div>
+        </div>
+      </div>
+
+      <div id="admin-settings" class="tab-content hidden">
+        <h2 class="text-2xl font-bold mb-6">Settings</h2>
+        <p class="text-gray-600 mb-4">Manage system-wide settings and security preferences.</p>
+
+        <div class="settings-section mb-6">
+          <h3 class="text-xl font-bold mb-4">Account</h3>
+          <div class="settings-list flex flex-col gap-4">
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="openModal('personalInfoModal')">
+              <span class="text-2xl">👤</span>
+              <div>
+                <div class="font-semibold">Personal Information</div>
+                <div class="text-gray-600 text-sm">Manage your personal information</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Notification settings coming soon!')">
+              <span class="text-2xl">🔔</span>
+              <div>
+                <div class="font-semibold">Notifications</div>
+                <div class="text-gray-600 text-sm">Manage your notification preferences</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Display settings coming soon!')">
+              <span class="text-2xl">💡</span>
+              <div>
+                <div class="font-semibold">Display</div>
+                <div class="text-gray-600 text-sm">Manage your display preferences</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3 class="text-xl font-bold mb-4">Security</h3>
+          <div class="settings-list flex flex-col gap-4">
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Password management coming soon!')">
+              <span class="text-2xl">🔑</span>
+              <div>
+                <div class="font-semibold">Password</div>
+                <div class="text-gray-600 text-sm">Manage your password</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Two-Factor Authentication settings coming soon!')">
+              <span class="text-2xl">🔒</span>
+              <div>
+                <div class="font-semibold">Two-Factor Authentication</div>
+                <div class="text-gray-600 text-sm">Manage your two-factor authentication</div>
+              </div>
+            </div>
+            <div class="settings-item bg-gray-100 p-4 rounded-md flex items-center gap-4 cursor-pointer hover:bg-gray-200" onclick="alert('Connected Devices management coming soon!')">
+              <span class="text-2xl">💻</span>
+              <div>
+                <div class="font-semibold">Connected Devices</div>
+                <div class="text-gray-600 text-sm">Manage your connected devices</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="postAnnouncementModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h3 class="text-xl font-bold mb-4">Post a New Announcement</h3>
+          <form id="postAnnouncementForm" onsubmit="postNewAnnouncement(event)">
+            <textarea id="newAnnouncementText" placeholder="Write announcement details here..." required class="form-textarea border p-2 rounded-md w-full mb-4 h-32 resize-y"></textarea>
+            <div class="flex justify-end gap-2">
+              <button type="button" onclick="closeModal('postAnnouncementModal')" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-success">Post Now</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+       <div id="addRuleModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h3 class="text-xl font-bold mb-4">Add New Automation Rule</h3>
+          <form id="addRuleForm" onsubmit="addAutomationRule(event)">
+            <input type="text" id="newRuleText" placeholder="e.g., Alert when marketplace has new listings" required class="form-input border p-2 rounded-md w-full mb-4">
+            <div class="flex justify-end gap-2">
+              <button type="button" onclick="closeModal('addRuleModal')" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-success">Add Rule</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+       <div id="personalInfoModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h3 class="text-xl font-bold mb-4">Personal Information</h3>
+          <form onsubmit="event.preventDefault(); alert('Information updated successfully!'); closeModal('personalInfoModal');">
+              <label class="text-left w-full block">Name</label>
+              <input type="text" value="Administrator" class="form-input border p-2 rounded-md w-full mb-4">
+              <label class="text-left w-full block">Email</label>
+              <input type="email" value="admin@krishimitra.com" class="form-input border p-2 rounded-md w-full mb-4">
+              <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeModal('personalInfoModal')" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-success">Save Changes</button>
+              </div>
+          </form>
+        </div>
+      </div>
+      
+    </main>
+  </section>
+
+  <div class="dark-mode-toggle">
+    <span>Dark Mode</span>
+    <label class="switch">
+      <input type="checkbox" id="darkModeSwitch">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <script>
+    // --- Global Data Storage and Retrieval (using localStorage for persistence) ---
+    function getData(key, defaultValue = []) {
+      try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+      } catch (e) {
+        console.error("Error parsing data from localStorage for key:", key, e);
+        return defaultValue;
+      }
+    }
+
+    function saveData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+      globalUIRefresh(); // *** NEW: Refresh UI on every data save ***
+    }
+
+    // --- NEW: Global UI Refresh Function ---
+    function globalUIRefresh() {
+        // This function will re-render all dynamic parts of the UI
+        // It's a simple way to achieve reactivity in a frontend-only app
+        updateDashboardCounts();
+        renderFarmersTable();
+        renderAdminFarmersTable();
+        renderToolsTable();
+        renderAdminToolsTable();
+        renderReportsTable();
+        renderAdminReportsTable();
+        renderMarketplaceTable();
+        renderAgentsTable();
+        renderAnnouncementsForAgent();
+        renderAnnouncementsForAdmin();
+    }
+
+    // Function to apply dark mode (defined locally to ensure it's available)
+    function applyDarkMode(isDarkMode) {
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+      localStorage.setItem('darkMode', isDarkMode);
+    }
+
+    // --- Core Application Flow ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeDummyData(); // Ensure dummy data exists on first load
+      initApp();
+    });
+
+    function initApp() {
+      const loggedInUserRole = localStorage.getItem('loggedInUserRole');
+      hideAllSections(); // Hide all major sections first
+
+      if (loggedInUserRole === 'admin') {
+        document.body.classList.remove('homepage-bg');
+        document.getElementById('top-right-login-btn-container').classList.add('hidden');
+        document.getElementById('admin-dashboard-page').classList.remove('hidden');
+        showAdminTab('admin-dashboard');
+        renderAdminActivityLog();
+        renderAutomationRules();
+        renderCommunityPosts();
+        renderFarmerRegistrationsChart();
+        renderToolUsageChart();
+        renderReportSubmissionsChart();
+      } else if (loggedInUserRole === 'agent') {
+        document.body.classList.remove('homepage-bg');
+        document.getElementById('top-right-login-btn-container').classList.add('hidden');
+        document.getElementById('agent-dashboard-page').classList.remove('hidden');
+        const loggedInAgentName = localStorage.getItem('loggedInAgentName') || 'Agent';
+        document.getElementById('loggedInAgentName').textContent = loggedInAgentName;
+        showAgentTab('agent-dashboard');
+        renderActivityLog();
+      } else {
+        document.body.classList.add('homepage-bg');
+        document.getElementById('top-right-login-btn-container').classList.remove('hidden');
+        document.getElementById('login-page').classList.remove('hidden');
+      }
+      
+      globalUIRefresh(); // Refresh all UI components on initial load
+
+      // Initialize dark mode based on localStorage
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      applyDarkMode(isDarkMode);
+      document.getElementById('darkModeSwitch').checked = isDarkMode;
+
+
+      // Dark mode toggle functionality (global)
+      document.getElementById('darkModeSwitch').addEventListener('change', function() {
+        applyDarkMode(this.checked);
+      });
+    }
+
+    function hideAllSections() {
+      document.getElementById('login-page').classList.add('hidden');
+      document.getElementById('agent-dashboard-page').classList.add('hidden');
+      document.getElementById('admin-dashboard-page').classList.add('hidden');
+    }
+
+    // --- Login Page Logic ---
+    const loginFormContainer = document.getElementById('login-form-container');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const loginMessage = document.getElementById('loginMessage');
+
+    function revealLoginForm() {
+        welcomeScreen.classList.add('hidden');
+        loginFormContainer.classList.remove('hidden');
+        loginMessage.classList.add('hidden');
+    }
+
+    document.getElementById('back-to-welcome').addEventListener('click', (e) => {
+        e.preventDefault();
+        welcomeScreen.classList.remove('hidden');
+        loginFormContainer.classList.add('hidden');
+        document.getElementById('loginForm').reset();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const selectedRole = document.querySelector('input[name="role"]:checked').value;
+
+      loginMessage.classList.add('hidden');
+
+      if (selectedRole === 'admin') {
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'adminpassword';
+
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          localStorage.setItem('loggedInUserRole', 'admin');
+          initApp();
+        } else {
+          loginMessage.textContent = 'Invalid Admin credentials.';
+          loginMessage.classList.remove('hidden');
+        }
+      } else if (selectedRole === 'agent') {
+        const agentCredentials = getData('agentCredentials');
+        const agent = agentCredentials.find(
+          agent => agent.username === username && agent.password === password
+        );
+
+        if (agent) {
+          localStorage.setItem('loggedInUserRole', 'agent');
+          localStorage.setItem('loggedInAgentName', agent.name);
+          initApp();
+        } else {
+          loginMessage.textContent = 'Invalid Agent credentials.';
+          loginMessage.classList.remove('hidden');
+        }
+      }
+    });
+    
+    // --- Announcement Feature ---
+    function postNewAnnouncement(event) {
+        event.preventDefault();
+        const text = document.getElementById('newAnnouncementText').value;
+        if (!text.trim()) {
+            alert('Announcement text cannot be empty.');
+            return;
+        }
+        
+        const newAnnouncement = {
+            text: text,
+            date: new Date().toISOString().slice(0, 10)
+        };
+        
+        let announcements = getData('announcements', []);
+        announcements.unshift(newAnnouncement);
+        saveData('announcements', announcements); // This will now trigger the global refresh
+        
+        alert('Announcement posted successfully!');
+        closeModal('postAnnouncementModal');
+        document.getElementById('postAnnouncementForm').reset();
+    }
+    
+    function deleteAnnouncement(index) {
+        if (!confirm('Are you sure you want to delete this announcement?')) return;
+        let announcements = getData('announcements');
+        announcements.splice(index, 1);
+        saveData('announcements', announcements); // This will trigger the global refresh
+    }
+
+    function renderAnnouncementsForAgent() {
+        const announcements = getData('announcements', []);
+        const container = document.getElementById('announcements-list');
+        if (!container) return;
+        
+        if (announcements.length === 0) {
+            container.innerHTML = '<p>No new announcements.</p>';
+            return;
+        }
+        
+        container.innerHTML = announcements.map(ann => `
+            <div class="announcement-item">
+                <p class="announcement-date">Posted on ${ann.date}</p>
+                <p>${ann.text}</p>
+            </div>
+        `).join('');
+    }
+    
+    function renderAnnouncementsForAdmin() {
+        const announcements = getData('announcements', []);
+        const container = document.getElementById('admin-announcements-list');
+        if (!container) return;
+        
+        if (announcements.length === 0) {
+            container.innerHTML = '<p>No announcements posted yet.</p>';
+            return;
+        }
+        
+        container.innerHTML = announcements.map((ann, index) => `
+            <div class="announcement-item flex justify-between items-center">
+                <div>
+                    <p class="announcement-date">Posted on ${ann.date}</p>
+                    <p>${ann.text}</p>
+                </div>
+                <button class="text-red-500 hover:underline" onclick="deleteAnnouncement(${index})">Delete</button>
+            </div>
+        `).join('');
+    }
+
+    // --- Logout Function (Common for both Dashboards) ---
+    function logout() {
+      localStorage.removeItem('loggedInUserRole');
+      localStorage.removeItem('loggedInAgentName');
+      initApp(); // Re-initialize app to show login page
+    }
+
+    // --- Generic UI Functions ---
+    function toggleAddForm(formId) {
+      document.getElementById(formId).classList.toggle('hidden');
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+      document.getElementById(modalId).classList.add('flex');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+      document.getElementById(modalId).classList.remove('flex');
+    }
+
+    // --- Dashboard Specific Tab Switching (Agent) ---
+    function showAgentTab(tabId) {
+      document.querySelectorAll('#agent-dashboard-page .tab-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('#agent-dashboard-page .sidebar-links li').forEach(li => {
+        li.classList.remove('active');
+        if (li.querySelector('a').getAttribute('onclick').includes(tabId)) {
+          li.classList.add('active');
+        }
+      });
+    }
+
+    // --- Dashboard Specific Tab Switching (Admin) ---
+    function showAdminTab(tabId) {
+      document.querySelectorAll('#admin-dashboard-page .tab-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('#admin-dashboard-page .sidebar-links li').forEach(li => {
+        li.classList.remove('active');
+        if (li.querySelector('a').getAttribute('onclick').includes(tabId)) {
+          li.classList.add('active');
+        }
+      });
+    }
+
+    // --- Dashboard Counts (Common) ---
+    function updateDashboardCounts() {
+      const farmersCountElement = document.getElementById('farmersCount');
+      if (farmersCountElement) farmersCountElement.textContent = getData('farmers').length;
+      
+      const toolsCountElement = document.getElementById('toolsCount');
+      if (toolsCountElement) toolsCountElement.textContent = getData('tools').length;
+      
+      const reportsCountElement = document.getElementById('reportsCount');
+      if (reportsCountElement) reportsCountElement.textContent = getData('reports').length;
+      
+      const totalFarmersElement = document.getElementById('totalFarmers');
+      if (totalFarmersElement) totalFarmersElement.textContent = getData('adminFarmers').length;
+      
+      const totalAgentsElement = document.getElementById('totalAgents');
+      if (totalAgentsElement) totalAgentsElement.textContent = getData('agents').length;
+      
+      const marketplaceListingsElement = document.getElementById('marketplaceListings');
+      if (marketplaceListingsElement) marketplaceListingsElement.textContent = getData('marketplaceListings').length;
+      
+      const totalReportsElement = document.getElementById('totalReports');
+      if (totalReportsElement) totalReportsElement.textContent = getData('adminReports').length;
+    }
+
+    // --- Activity Log (Agent) ---
+    function addActivity(activity, details) {
+      const date = new Date().toISOString().slice(0, 10);
+      let activityLog = getData('activityLog', []);
+      activityLog.unshift({ date, activity, details });
+      if (activityLog.length > 10) {
+        activityLog = activityLog.slice(0, 10);
+      }
+      localStorage.setItem('activityLog', JSON.stringify(activityLog)); // Direct save to not cause loop
+      renderActivityLog(); // Render manually
+    }
+
+    function renderActivityLog() {
+      const activityLog = getData('activityLog');
+      const tbody = document.getElementById('activity-list');
+      if (tbody) { // Check if element exists (only on agent dashboard)
+        tbody.innerHTML = '';
+        activityLog.forEach(log => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td class="p-3">${log.date}</td>
+            <td class="p-3">${log.activity}</td>
+            <td class="p-3">${log.details}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    // --- Admin Activity Log ---
+    function addAdminActivity(activity, details) {
+      const date = new Date().toISOString().slice(0, 10);
+      let activityLog = getData('adminActivityLog', []);
+      activityLog.unshift({ date, activity, details });
+      if (activityLog.length > 10) {
+        activityLog = activityLog.slice(0, 10);
+      }
+      localStorage.setItem('adminActivityLog', JSON.stringify(activityLog)); // Direct save
+      renderAdminActivityLog();
+    }
+
+    function renderAdminActivityLog() {
+      const activityLog = getData('adminActivityLog');
+      const tbody = document.getElementById('admin-activity-list');
+      if (tbody) { // Check if element exists (only on admin dashboard)
+        tbody.innerHTML = '';
+        activityLog.forEach(log => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td class="p-3">${log.date}</td>
+            <td class="p-3">${log.activity}</td>
+            <td class="p-3">${log.details}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    // --- Farmers Tab Logic (Agent) ---
+    function addFarmer(event) {
+      event.preventDefault();
+      let farmers = getData('farmers');
+      farmers.push({ 
+          name: document.getElementById('farmerName').value, 
+          location: document.getElementById('farmerLocation').value, 
+          contact: document.getElementById('farmerContact').value, 
+          status: document.getElementById('farmerStatus').value 
+      });
+      addActivity('Farmer Registration', `${document.getElementById('farmerName').value} registered`);
+      saveData('farmers', farmers);
+      
+      // Also update admin farmers for sync
+      let adminFarmers = getData('adminFarmers');
+      adminFarmers.push({
+          name: document.getElementById('farmerName').value, 
+          location: document.getElementById('farmerLocation').value, 
+          contact: document.getElementById('farmerContact').value, 
+          status: document.getElementById('farmerStatus').value,
+          assignedAgent: localStorage.getItem('loggedInAgentName') || 'N/A'
+      });
+      saveData('adminFarmers', adminFarmers);
+
+      toggleAddForm('addAgentFarmerForm');
+      document.getElementById('addAgentFarmerForm').reset();
+    }
+
+    function renderFarmersTable() {
+      const farmers = getData('farmers');
+      const tbody = document.getElementById('farmerTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        farmers.forEach((farmer, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${farmer.name}</td>
+            <td class="p-3">${farmer.location}</td>
+            <td class="p-3">${farmer.contact}</td>
+            <td class="p-3 ${farmer.status === 'Active' ? 'text-green-600' : 'text-red-500'}">${farmer.status}</td>
+            <td class="p-3">
+              <button onclick="viewFarmer(${index})" class="text-blue-600 hover:underline mr-2">View</button>
+              <button onclick="deleteFarmer(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function viewFarmer(index) {
+      const farmers = getData('farmers');
+      const farmer = farmers[index];
+      if (farmer) {
+        document.getElementById('viewFarmerName').textContent = 'Name: ' + farmer.name;
+        document.getElementById('viewFarmerLocation').textContent = 'Location: ' + farmer.location;
+        document.getElementById('viewFarmerContact').textContent = 'Contact: ' + farmer.contact;
+        document.getElementById('viewFarmerStatus').textContent = 'Status: ' + farmer.status;
+        openModal('viewFarmerModal');
+      }
+    }
+
+    function deleteFarmer(index) {
+      let farmers = getData('farmers');
+      const deletedFarmer = farmers.splice(index, 1)[0];
+      addActivity('Farmer Deletion', `${deletedFarmer.name} removed`);
+      saveData('farmers', farmers);
+      
+      // Also remove from admin for sync
+      let adminFarmers = getData('adminFarmers').filter(f => f.contact !== deletedFarmer.contact);
+      saveData('adminFarmers', adminFarmers);
+    }
+
+    function searchFarmers() {
+      const input = document.getElementById('searchFarmerInput').value.toLowerCase();
+      document.querySelectorAll('#farmerTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Tools Tab Logic (Agent) ---
+    function addTool(event) {
+      event.preventDefault();
+      const name = document.getElementById('toolName').value;
+      const type = document.getElementById('toolType').value;
+      let tools = getData('tools');
+      tools.push({ 
+          name, 
+          type,
+          quantity: document.getElementById('toolQuantity').value, 
+          usage: document.getElementById('toolUsage').value, 
+          maintenance: document.getElementById('toolMaintenance').value
+      });
+      addActivity('Tool Added', `${name} (${type}) added`);
+      saveData('tools', tools);
+      
+      let adminTools = getData('adminTools');
+      adminTools.push({ name, type, quantity: document.getElementById('toolQuantity').value, usage: document.getElementById('toolUsage').value, maintenance: document.getElementById('toolMaintenance').value});
+      saveData('adminTools', adminTools);
+
+      toggleAddForm('addAgentToolForm');
+      document.getElementById('addAgentToolForm').reset();
+    }
+
+    function renderToolsTable() {
+      const tools = getData('tools');
+      const tbody = document.getElementById('toolsTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        tools.forEach((tool, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${tool.name}</td>
+            <td class="p-3">${tool.type}</td>
+            <td class="p-3">${tool.quantity}</td>
+            <td class="p-3">${tool.usage}</td>
+            <td class="p-3">${tool.maintenance}</td>
+            <td class="p-3">
+              <button onclick="deleteTool(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function deleteTool(index) {
+      let tools = getData('tools');
+      const deletedTool = tools.splice(index, 1)[0];
+      addActivity('Tool Removed', `${deletedTool.name} removed`);
+      saveData('tools', tools);
+    }
+
+    function searchTools() {
+      const input = document.getElementById('searchToolInput').value.toLowerCase();
+      document.querySelectorAll('#toolsTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    function filterTools(filter, event) {
+      // Ensure the event object is passed and target is valid
+      if (event && event.target) {
+        document.querySelectorAll('#agent-tools .filter-btn, #admin-tools .filter-btn').forEach(btn => btn.classList.remove('active', 'bg-green-500', 'text-white'));
+        document.querySelectorAll('#agent-tools .filter-btn, #admin-tools .filter-btn').forEach(btn => btn.classList.add('bg-gray-200', 'text-gray-700'));
+
+        const clickedBtn = event.target;
+        clickedBtn.classList.add('active', 'bg-green-500', 'text-white');
+        clickedBtn.classList.remove('bg-gray-200', 'text-gray-700');
+      }
+
+      const tableBodyId = localStorage.getItem('loggedInUserRole') === 'admin' ? 'adminToolsTableBody' : 'toolsTableBody';
+      const tableRows = document.querySelectorAll(`#${tableBodyId} tr`);
+
+      tableRows.forEach(row => {
+        const usage = row.cells[3].textContent.trim();
+        if (filter === 'all') {
+          row.style.display = '';
+        } else {
+          row.style.display = usage === filter ? '' : 'none';
+        }
+      });
+    }
+
+    // --- Reports Tab Logic (Agent) ---
+    function addReport(event) {
+      event.preventDefault();
+      const name = document.getElementById('reportName').value;
+      const field = document.getElementById('reportField').value;
+      let reports = getData('reports');
+      reports.push({ 
+          name, 
+          field,
+          type: document.getElementById('reportType').value, 
+          date: document.getElementById('reportDate').value, 
+          tool: document.getElementById('reportTool').value 
+      });
+      addActivity('Report Submitted', `${name} for ${field}`);
+      saveData('reports', reports);
+      
+      let adminReports = getData('adminReports');
+      adminReports.push({ name, field, type: document.getElementById('reportType').value, date: document.getElementById('reportDate').value, tool: document.getElementById('reportTool').value });
+      saveData('adminReports', adminReports);
+
+      toggleAddForm('addAgentReportForm');
+      document.getElementById('addAgentReportForm').reset();
+    }
+
+    function renderReportsTable() {
+      const reports = getData('reports');
+      const tbody = document.getElementById('reportsTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        reports.forEach((report, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${report.name}</td>
+            <td class="p-3">${report.type}</td>
+            <td class="p-3">${report.date}</td>
+            <td class="p-3">${report.field}</td>
+            <td class="p-3">${report.tool}</td>
+            <td class="p-3">
+              <button onclick="viewReport(${index})" class="text-blue-600 hover:underline mr-2">View</button>
+              <button onclick="deleteReport(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function viewReport(index) {
+      const reports = getData('reports');
+      const report = reports[index];
+      if (report) {
+        document.getElementById('viewReportName').textContent = 'Report Name: ' + report.name;
+        document.getElementById('viewReportType').textContent = 'Type: ' + report.type;
+        document.getElementById('viewReportDate').textContent = 'Date: ' + report.date;
+        document.getElementById('viewReportField').textContent = 'Field: ' + report.field;
+        document.getElementById('viewReportTool').textContent = 'Tool: ' + report.tool;
+        openModal('viewReportModal');
+      }
+    }
+
+    function deleteReport(index) {
+      let reports = getData('reports');
+      const deletedReport = reports.splice(index, 1)[0];
+      addActivity('Report Deleted', `${deletedReport.name} removed`);
+      saveData('reports', reports);
+    }
+
+    function searchReports() {
+      const input = document.getElementById('searchReportInput').value.toLowerCase();
+      document.querySelectorAll('#reportsTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Log Field Report Modal (from Agent Dashboard Quick Actions) ---
+    function submitFieldReport(event) {
+      event.preventDefault();
+      const reportTitle = document.getElementById('reportTitle').value;
+      const reportDateField = document.getElementById('reportDateField').value;
+      const reportFieldName = document.getElementById('reportFieldName').value;
+      const reportDetails = document.getElementById('reportDetails').value;
+
+      addActivity('Field Report Logged', `${reportTitle} for ${reportFieldName}`);
+      alert(`Field Report Submitted:\nTitle: ${reportTitle}\nDate: ${reportDateField}\nField: ${reportFieldName}\nDetails: ${reportDetails}`);
+      document.getElementById('logFieldReportForm').reset();
+      closeModal('logFieldReportModal');
+    }
+
+    // --- Farmers Tab Logic (Admin) ---
+    function addAdminFarmer(event) {
+      event.preventDefault();
+      let farmers = getData('adminFarmers');
+      farmers.push({ 
+          name: document.getElementById('adminFarmerName').value, 
+          location: document.getElementById('adminFarmerLocation').value, 
+          contact: document.getElementById('adminFarmerContact').value, 
+          status: document.getElementById('adminFarmerStatus').value,
+          assignedAgent: document.getElementById('adminFarmerAssignedAgent').value,
+      });
+      addAdminActivity('Farmer Added (Admin)', `${document.getElementById('adminFarmerName').value} added by Admin`);
+      saveData('adminFarmers', farmers);
+      toggleAddForm('addAdminFarmerForm');
+      document.getElementById('addAdminFarmerForm').reset();
+    }
+
+    function renderAdminFarmersTable() {
+      const farmers = getData('adminFarmers');
+      const tbody = document.getElementById('adminFarmerTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        farmers.forEach((farmer, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${farmer.name}</td>
+            <td class="p-3">${farmer.location}</td>
+            <td class="p-3">${farmer.contact}</td>
+            <td class="p-3 ${farmer.status === 'Active' ? 'text-green-600' : 'text-red-500'}">${farmer.status}</td>
+            <td class="p-3">${farmer.assignedAgent || 'N/A'}</td>
+            <td class="p-3">
+              <button onclick="viewAdminFarmer(${index})" class="text-blue-600 hover:underline mr-2">View</button>
+              <button onclick="deleteAdminFarmer(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function viewAdminFarmer(index) {
+      const farmers = getData('adminFarmers');
+      const farmer = farmers[index];
+      if (farmer) {
+        document.getElementById('viewAdminFarmerName').textContent = 'Name: ' + farmer.name;
+        document.getElementById('viewAdminFarmerLocation').textContent = 'Location: ' + farmer.location;
+        document.getElementById('viewAdminFarmerContact').textContent = 'Contact: ' + farmer.contact;
+        document.getElementById('viewAdminFarmerStatus').textContent = 'Status: ' + farmer.status;
+        document.getElementById('viewAdminFarmerAssignedAgent').textContent = 'Assigned Agent: ' + (farmer.assignedAgent || 'N/A');
+        openModal('viewAdminFarmerModal');
+      }
+    }
+
+    function deleteAdminFarmer(index) {
+      let farmers = getData('adminFarmers');
+      const deletedFarmer = farmers.splice(index, 1)[0];
+      addAdminActivity('Farmer Deleted (Admin)', `${deletedFarmer.name} removed by Admin`);
+      saveData('adminFarmers', farmers);
+    }
+
+    function searchAdminFarmers() {
+      const input = document.getElementById('searchAdminFarmerInput').value.toLowerCase();
+      document.querySelectorAll('#adminFarmerTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Agents Tab Logic (Admin) ---
+    function generateRandomPassword(length = 8) {
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      return password;
+    }
+
+    function addAgent(event) {
+      event.preventDefault();
+      const name = document.getElementById('agentName').value;
+      const email = document.getElementById('agentEmail').value;
+      const phone = document.getElementById('agentPhone').value;
+      const region = document.getElementById('agentRegion').value;
+
+      const username = email.split('@')[0];
+      const password = generateRandomPassword();
+
+      let agents = getData('agents');
+      let agentCredentials = getData('agentCredentials', []);
+
+      if (agents.some(a => a.email === email) || agentCredentials.some(ac => ac.username === username)) {
+        alert('Agent with this email or a similar username already exists. Please use a different email.');
+        return;
+      }
+
+      agents.push({ name, email, phone, region });
+      saveData('agents', agents);
+      
+      agentCredentials.push({ name, username, password, role: 'agent', email: email });
+      saveData('agentCredentials', agentCredentials);
+
+      addAdminActivity('Agent Added', `${name} (${email}) registered. Username: ${username}, Password: ${password}`);
+      alert(`Agent ${name} added successfully!\nDefault Username: ${username}\nDefault Password: ${password}\nPlease provide these credentials to the agent.`);
+      toggleAddForm('addAdminAgentForm');
+      document.getElementById('addAdminAgentForm').reset();
+    }
+
+    function renderAgentsTable() {
+      const agents = getData('agents');
+      const agentCredentials = getData('agentCredentials');
+      const tbody = document.getElementById('agentTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        agents.forEach((agent, index) => {
+          const credentials = agentCredentials.find(cred => cred.email === agent.email);
+          const username = credentials ? credentials.username : 'N/A';
+          const password = credentials ? credentials.password : 'N/A';
+
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${agent.name}</td>
+            <td class="p-3">${agent.email}</td>
+            <td class="p-3">${agent.phone || 'N/A'}</td>
+            <td class="p-3">${agent.region || 'N/A'}</td>
+            <td class="p-3">${username}</td>
+            <td class="p-3">${password}</td>
+            <td class="p-3">
+              <button onclick="deleteAgent(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function deleteAgent(index) {
+      let agents = getData('agents');
+      let agentCredentials = getData('agentCredentials');
+
+      const deletedAgent = agents.splice(index, 1)[0];
+      saveData('agents', agents);
+      
+      agentCredentials = agentCredentials.filter(cred => cred.email !== deletedAgent.email);
+      saveData('agentCredentials', agentCredentials);
+      
+      addAdminActivity('Agent Deleted', `${deletedAgent.name} removed`);
+    }
+
+    function searchAgents() {
+      const input = document.getElementById('searchAgentInput').value.toLowerCase();
+      document.querySelectorAll('#agentTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Tools Tab Logic (Admin) ---
+    function addAdminTool(event) {
+      event.preventDefault();
+      let tools = getData('adminTools');
+      tools.push({
+        name: document.getElementById('adminToolName').value,
+        type: document.getElementById('adminToolType').value,
+        quantity: document.getElementById('adminToolQuantity').value,
+        usage: document.getElementById('adminToolUsage').value,
+        maintenance: document.getElementById('adminToolMaintenance').value
+      });
+      addAdminActivity('Tool Added (Admin)', `${document.getElementById('adminToolName').value} added by Admin`);
+      saveData('adminTools', tools);
+      toggleAddForm('addAdminToolForm');
+      document.getElementById('addAdminToolForm').reset();
+    }
+
+    function renderAdminToolsTable() {
+      const tools = getData('adminTools');
+      const tbody = document.getElementById('adminToolsTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        tools.forEach((tool, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${tool.name}</td>
+            <td class="p-3">${tool.type}</td>
+            <td class="p-3">${tool.quantity}</td>
+            <td class="p-3">${tool.usage}</td>
+            <td class="p-3">${tool.maintenance}</td>
+            <td class="p-3">
+              <button onclick="deleteAdminTool(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function deleteAdminTool(index) {
+      let tools = getData('adminTools');
+      const deletedTool = tools.splice(index, 1)[0];
+      addAdminActivity('Tool Removed (Admin)', `${deletedTool.name} removed by Admin`);
+      saveData('adminTools', tools);
+    }
+
+    function searchAdminTools() {
+      const input = document.getElementById('searchAdminToolInput').value.toLowerCase();
+      document.querySelectorAll('#adminToolsTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Reports Tab Logic (Admin) ---
+    function addAdminReport(event) {
+      event.preventDefault();
+      let reports = getData('adminReports');
+      reports.push({
+          name: document.getElementById('adminReportName').value,
+          type: document.getElementById('adminReportType').value,
+          date: document.getElementById('adminReportDate').value,
+          field: document.getElementById('adminReportField').value,
+          tool: document.getElementById('adminReportTool').value
+      });
+      addAdminActivity('Report Added (Admin)', `${document.getElementById('adminReportName').value} for ${document.getElementById('adminReportField').value} added by Admin`);
+      saveData('adminReports', reports);
+      toggleAddForm('addAdminReportForm');
+      document.getElementById('addAdminReportForm').reset();
+    }
+
+    function renderAdminReportsTable() {
+      const reports = getData('adminReports');
+      const tbody = document.getElementById('adminReportsTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        reports.forEach((report, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${report.name}</td>
+            <td class="p-3">${report.type}</td>
+            <td class="p-3">${report.date}</td>
+            <td class="p-3">${report.field}</td>
+            <td class="p-3">${report.tool}</td>
+            <td class="p-3">
+              <button onclick="viewAdminReport(${index})" class="text-blue-600 hover:underline mr-2">View</button>
+              <button onclick="deleteAdminReport(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function viewAdminReport(index) {
+      const reports = getData('adminReports');
+      const report = reports[index];
+      if (report) {
+        document.getElementById('viewAdminReportName').textContent = 'Report Name: ' + report.name;
+        document.getElementById('viewAdminReportType').textContent = 'Type: ' + report.type;
+        document.getElementById('viewAdminReportDate').textContent = 'Date: ' + report.date;
+        document.getElementById('viewAdminReportField').textContent = 'Field: ' + report.field;
+        document.getElementById('viewAdminReportTool').textContent = 'Tool: ' + report.tool;
+        openModal('viewAdminReportModal');
+      }
+    }
+
+    function deleteAdminReport(index) {
+      let reports = getData('adminReports');
+      const deletedReport = reports.splice(index, 1)[0];
+      addAdminActivity('Report Deleted (Admin)', `${deletedReport.name} removed by Admin`);
+      saveData('adminReports', reports);
+    }
+
+    function searchAdminReports() {
+      const input = document.getElementById('searchAdminReportInput').value.toLowerCase();
+      document.querySelectorAll('#adminReportsTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Marketplace Tab Logic (Admin) ---
+    function addListing(event) {
+      event.preventDefault();
+      let listings = getData('marketplaceListings');
+      listings.push({
+          name: document.getElementById('listingName').value,
+          category: document.getElementById('listingCategory').value,
+          vendor: document.getElementById('listingVendor').value,
+          description: document.getElementById('listingDescription').value,
+      });
+      addAdminActivity('Marketplace Listing Added', `${document.getElementById('listingName').value} added`);
+      saveData('marketplaceListings', listings);
+      toggleAddForm('addListingForm');
+      document.getElementById('addListingForm').reset();
+    }
+
+    function renderMarketplaceTable() {
+      const listings = getData('marketplaceListings');
+      const tbody = document.getElementById('marketplaceTableBody');
+      if (tbody) {
+        tbody.innerHTML = '';
+        listings.forEach((listing, index) => {
+          const row = document.createElement('tr');
+          row.className = "hover:bg-gray-50 dark:hover:bg-gray-700";
+          row.innerHTML = `
+            <td class="p-3">${listing.name}</td>
+            <td class="p-3">${listing.category}</td>
+            <td class="p-3">${listing.vendor}</td>
+            <td class="p-3">${listing.description}</td>
+            <td class="p-3">
+              <button onclick="deleteListing(${index})" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+    }
+
+    function deleteListing(index) {
+      let listings = getData('marketplaceListings');
+      const deletedListing = listings.splice(index, 1)[0];
+      addAdminActivity('Marketplace Listing Removed', `${deletedListing.name} removed`);
+      saveData('marketplaceListings', listings);
+    }
+
+    function searchMarketplace() {
+      const input = document.getElementById('searchMarketplaceInput').value.toLowerCase();
+      document.querySelectorAll('#marketplaceTableBody tr').forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(input) ? '' : 'none';
+      });
+    }
+
+    // --- Community Tab Logic (Admin) ---
+    function postAnnouncement() {
+      const announcementText = document.getElementById('announcementText').value;
+      if (!announcementText.trim()) {
+        alert('Announcement cannot be empty!');
+        return;
+      }
+      const date = new Date().toISOString().slice(0, 10);
+      let communityPosts = getData('communityPosts', []);
+      communityPosts.unshift({ type: 'announcement', author: 'Admin', date: date, content: announcementText });
+      saveData('communityPosts', communityPosts);
+      document.getElementById('announcementText').value = '';
+      addAdminActivity('Announcement Posted', `New announcement: "${announcementText.substring(0, 30)}..."`);
+    }
+    
+    function flagPost(index) {
+        let communityPosts = getData('communityPosts');
+        communityPosts[index].flagged = !communityPosts[index].flagged; // Toggle flag
+        saveData('communityPosts', communityPosts);
+    }
+
+    function renderCommunityPosts() {
+      const communityPosts = getData('communityPosts');
+      const postsList = document.getElementById('communityPostsList');
+      if (postsList) {
+        postsList.innerHTML = '';
+
+        communityPosts.forEach((post, index) => {
+          const postDiv = document.createElement('div');
+          postDiv.className = `community-post bg-gray-100 p-4 rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-100 ${post.flagged ? 'flagged' : ''}`;
+          postDiv.innerHTML = `
+            <div class="font-semibold text-gray-800 dark:text-gray-100">${post.author}: ${post.content.substring(0, 50)}${post.content.length > 50 ? '...' : ''}</div>
+            <div class="text-gray-600 text-sm mb-2 dark:text-gray-300">Posted by ${post.author} on ${post.date}</div>
+            <p class="text-gray-700 dark:text-gray-200">${post.content}</p>
+            <div class="text-right mt-2">
+              <button class="text-red-600 hover:underline text-sm dark:text-red-400" onclick="deleteCommunityPost(${index})">Delete</button>
+              <button class="text-yellow-600 hover:underline text-sm ml-2 dark:text-yellow-400" onclick="flagPost(${index})">${post.flagged ? 'Unflag' : 'Flag'}</button>
+            </div>
+          `;
+          postsList.appendChild(postDiv);
+        });
+      }
+    }
+
+    function deleteCommunityPost(index) {
+      let communityPosts = getData('communityPosts');
+      const deletedPost = communityPosts.splice(index, 1)[0];
+      saveData('communityPosts', communityPosts);
+      addAdminActivity('Community Post Deleted', `Post by ${deletedPost.author} removed`);
+    }
+    
+    // --- Automation Rules Logic ---
+    function renderAutomationRules() {
+        const rules = getData('automationRules');
+        const list = document.getElementById('automation-rules-list');
+        if (!list) return;
+
+        list.innerHTML = rules.map((rule, index) => `
+            <li class="mb-2 flex justify-between items-center">
+                <span>Rule: ${rule.text}</span>
+                <span>
+                    <span class="${rule.enabled ? 'text-green-600' : 'text-red-500'} ml-2 font-semibold">${rule.enabled ? 'Enabled' : 'Disabled'}</span>
+                    <button class="text-blue-600 hover:underline ml-4" onclick="toggleRule(${index})">Toggle</button>
+                    <button class="text-red-600 hover:underline ml-2" onclick="deleteRule(${index})">Delete</button>
+                </span>
+            </li>
+        `).join('');
+    }
+
+    function toggleRule(index) {
+        let rules = getData('automationRules');
+        rules[index].enabled = !rules[index].enabled;
+        saveData('automationRules', rules);
+    }
+    
+    function deleteRule(index) {
+        if (!confirm('Are you sure you want to delete this rule?')) return;
+        let rules = getData('automationRules');
+        rules.splice(index, 1);
+        saveData('automationRules', rules);
+    }
+    
+    function addAutomationRule(event) {
+        event.preventDefault();
+        const text = document.getElementById('newRuleText').value;
+        if (!text.trim()) return;
+        
+        let rules = getData('automationRules');
+        rules.push({ text: text, enabled: false });
+        saveData('automationRules', rules);
+        
+        closeModal('addRuleModal');
+        document.getElementById('addRuleForm').reset();
+    }
+
+
+    // --- Insights Tab Logic (Admin) ---
+    const farmerRegistrationsData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      datasets: [{
+        label: 'New Farmers Registered',
+        data: [10, 15, 8, 20, 12, 18, 25],
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    const toolUsageData = {
+      labels: ['Tractor', 'Harvester', 'Plow', 'Seeder', 'Sprayer'],
+      datasets: [{
+        label: 'Tool Usage',
+        data: [30, 20, 15, 25, 10],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const reportSubmissionsData = {
+      labels: ['North', 'South', 'East', 'West', 'Central'],
+      datasets: [{
+        label: 'Reports Submitted',
+        data: [5, 8, 12, 7, 10],
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    let farmerRegistrationsChartInstance;
+    let toolUsageChartInstance;
+    let reportSubmissionsChartInstance;
+
+    function renderFarmerRegistrationsChart() {
+      const ctx = document.getElementById('farmerRegistrationsChart');
+      if (ctx) {
+        if (farmerRegistrationsChartInstance) {
+          farmerRegistrationsChartInstance.destroy();
+        }
+        farmerRegistrationsChartInstance = new Chart(ctx.getContext('2d'), {
+          type: 'bar',
+          data: farmerRegistrationsData,
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderToolUsageChart() {
+      const ctx = document.getElementById('toolUsageChart');
+      if (ctx) {
+        if (toolUsageChartInstance) {
+          toolUsageChartInstance.destroy();
+        }
+        toolUsageChartInstance = new Chart(ctx.getContext('2d'), {
+          type: 'doughnut',
+          data: toolUsageData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: false,
+                text: 'Tool Usage Distribution'
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderReportSubmissionsChart() {
+      const ctx = document.getElementById('reportSubmissionsChart');
+      if (ctx) {
+        if (reportSubmissionsChartInstance) {
+          reportSubmissionsChartInstance.destroy();
+        }
+        reportSubmissionsChartInstance = new Chart(ctx.getContext('2d'), {
+          type: 'line',
+          data: reportSubmissionsData,
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // --- Initial Dummy Data Population ---
+    function initializeDummyData() {
+      // Agent-specific data
+      if (localStorage.getItem('farmers') === null) {
+        saveData('farmers', [
+          { name: 'Arjun Sharma', location: 'Village A, District X', contact: '+91 9876543210', status: 'Active' },
+          { name: 'Priya Verma', location: 'Village B, District Y', contact: '+91 8765432109', status: 'Active' },
+          { name: 'Rohan Kapoor', location: 'Village C, District Z', contact: '+91 7654321098', status: 'Inactive' }
+        ]);
+      }
+      if (localStorage.getItem('tools') === null) {
+        saveData('tools', [
+          { name: 'Tractor Model X', type: 'Tractor', quantity: 2, usage: 'Available', maintenance: 'Scheduled' },
+          { name: 'Harvester Model Y', type: 'Harvester', quantity: 1, usage: 'In use', maintenance: 'Completed' },
+          { name: 'Plow Model Z', type: 'Plow', quantity: 3, usage: 'Available', maintenance: 'Scheduled' }
+        ]);
+      }
+      if (localStorage.getItem('reports') === null) {
+        saveData('reports', [
+          { name: 'Harvest Report 2024', type: 'Farming Activity', date: '2024-05-15', field: 'Field A', tool: 'Combine Harvester' },
+          { name: 'Soil Analysis Report', type: 'Field Data', date: '2024-04-20', field: 'Field B', tool: 'Soil Analyzer' },
+          { name: 'Irrigation Efficiency Report', type: 'Tool Usage', date: '2024-03-25', field: 'Field C', tool: 'Irrigation System' }
+        ]);
+      }
+      if (localStorage.getItem('activityLog') === null) {
+        saveData('activityLog', [
+          { date: '2024-07-26', activity: 'Farmer Registration', details: 'Farmer Patel registered' },
+          { date: '2024-07-25', activity: 'Tool Deployment', details: 'Tractor deployed to field A' },
+          { date: '2024-07-24', activity: 'Field Report', details: 'Report submitted for field B' }
+        ]);
+      }
+
+      // Admin specific dummy data
+      if (localStorage.getItem('adminFarmers') === null) {
+        saveData('adminFarmers', [
+          { name: 'Arjun Sharma', location: 'Village A, District X', contact: '+91 9876543210', status: 'Active', assignedAgent: 'Agent Sharma' },
+          { name: 'Priya Verma', location: 'Village B, District Y', contact: '+91 8765432109', status: 'Active', assignedAgent: 'Agent Verma' },
+          { name: 'Rohan Kapoor', location: 'Village C, District Z', contact: '+91 7654321098', status: 'Inactive', assignedAgent: 'Agent Sharma' }
+        ]);
+      }
+      if (localStorage.getItem('agents') === null || localStorage.getItem('agentCredentials') === null) {
+        saveData('agents', [
+          { name: 'Agent Sharma', email: 'sharma@krishimitra.com', phone: '+91 9988776655', region: 'North' },
+          { name: 'Agent Verma', email: 'verma@krishimitra.com', phone: '+91 9876543210', region: 'South' }
+        ]);
+        saveData('agentCredentials', [
+          { name: 'Agent Sharma', username: 'sharma', password: 'password123', role: 'agent', email: 'sharma@krishimitra.com' },
+          { name: 'Agent Verma', username: 'verma', password: 'password123', role: 'agent', email: 'verma@krishimitra.com' }
+        ]);
+      }
+      if (localStorage.getItem('adminTools') === null) {
+        saveData('adminTools', [
+          { name: 'Tractor Model X', type: 'Tractor', quantity: 5, usage: 'Available', maintenance: 'Scheduled' },
+          { name: 'Harvester Model Y', type: 'Harvester', quantity: 2, usage: 'In use', maintenance: 'Completed' },
+          { name: 'Plow Model Z', type: 'Plow', quantity: 8, usage: 'Available', maintenance: 'Scheduled' }
+        ]);
+      }
+      if (localStorage.getItem('adminReports') === null) {
+        saveData('adminReports', [
+          { name: 'Harvest Report 2024', type: 'Farming Activity', date: '2024-05-15', field: 'Field A', tool: 'Combine Harvester' },
+          { name: 'Soil Analysis Report', type: 'Field Data', date: '2024-04-20', field: 'Field B', tool: 'Soil Analyzer' },
+          { name: 'Irrigation Efficiency Report', type: 'Tool Usage', date: '2024-03-25', field: 'Field C', tool: 'Irrigation System' }
+        ]);
+      }
+      if (localStorage.getItem('marketplaceListings') === null) {
+        saveData('marketplaceListings', [
+          { name: 'Organic Fertilizer Pack', category: 'Fertilizers', vendor: 'Green Harvest Co.', description: 'Eco-friendly fertilizer for all crops.' },
+          { name: 'Drip Irrigation Kit', category: 'Equipment', vendor: 'WaterWise Systems', description: 'Efficient water delivery for small farms.' }
+        ]);
+      }
+      if (localStorage.getItem('communityPosts') === null) {
+        saveData('communityPosts', [
+          { type: 'announcement', author: 'Admin', date: '2024-07-28', content: 'Important Update: New subsidy programs for drought-affected regions have been announced. Please check the official portal for details.', flagged: false },
+          { type: 'query', author: 'Agent Sharma', date: '2024-07-27', content: 'Has anyone experienced issues with the new soil testing kits? My readings seem inconsistent.', flagged: false }
+        ]);
+      }
+      if (localStorage.getItem('adminActivityLog') === null) {
+        saveData('adminActivityLog', [
+          { date: '2024-07-28', activity: 'Admin Login', details: 'Admin logged in' },
+          { date: '2024-07-27', activity: 'Agent Added', details: 'Agent Sharma registered' }
+        ]);
+      }
+      if (localStorage.getItem('automationRules') === null) {
+        saveData('automationRules', [
+            { text: 'Alert when tool count is less than 5', enabled: true },
+            { text: 'Alert when an agent is inactive for more than 7 days', enabled: false }
+        ]);
+      }
+       if (localStorage.getItem('announcements') === null) {
+        saveData('announcements', [
+            { text: 'Welcome to the new Krishimitra platform! All agents are requested to update their farmer data by the end of the month.', date: '2025-09-15' }
+        ]);
+      }
+    }
+  </script>
+</body>
+</html>
